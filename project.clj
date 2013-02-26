@@ -8,6 +8,7 @@
                  [ring-json-response "0.2.0"]
                  [c3p0/c3p0 "0.9.1.2"]
                  [org.clojure/java.jdbc "0.2.3"]
+                 [postgresql "9.1-901.jdbc4"]
                  [cheshire "4.0.3"]]
   :plugins [[lein-ring "0.7.3"]]
   :ring {:handler booking.handler/app}

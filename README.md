@@ -4,7 +4,19 @@ Clojure REST API for the Box UK Hackfest
 
 ## Usage
 
-Don't
+### ROOMS
+
+Get all meeting rooms
+
+```clojure
+curl -i -X http://localhost:3000/rooms
+```
+
+Get information about a single meeting room by room ID
+
+```clojure
+curl -i -X http://localhost:3000/rooms/1
+```
 
 ## License
 

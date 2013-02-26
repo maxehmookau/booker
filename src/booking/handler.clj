@@ -1,6 +1,6 @@
 (ns booking.handler
-  (:import [com.mchange.v2.c3p0.ComboPooledDataSource])
   (:use [compojure.core]
+        [booking.db :as sql]
         [cheshire.core :as json]
         [ring.util.json-response])
   (:require [compojure.handler :as handler]
@@ -9,7 +9,8 @@
 ;; CRUD for rooms
 
 (defn all-rooms []
-  (json-response {:rooms "All rooms here"}))
+  (let [rooms (sql/get-all :rooms)]
+  (json-response rooms)))
 
 (defn get-room [id]
   (json-response {:status 200}))
