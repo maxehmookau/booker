@@ -1,10 +1,10 @@
-# booking
+# Booking
 
-A Clojure library designed to ... well, that part is up to you.
+Clojure REST API for the Box UK Hackfest 
 
 ## Usage
 
-FIXME
+Don't
 
 ## License
 
