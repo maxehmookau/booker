@@ -28,19 +28,32 @@
 
 (defn db-connection [] @pooled-db)
 
-(defn create-rooms-table []
-  (sql/with-connection (db-connection)
-    (sql/create-table :rooms 
-      [:id "varchar(256)" "primary key"]
-      [:title "varchar(256)"])))
-
 (defmacro with-conn [& body]
   `(sql/with-connection (db-connection)
      (do ~@body)))
+
+(defn drop-table [table]
+  (with-conn
+    (sql/drop-table table)))
+
+(defn create-rooms-table []
+  (with-conn
+    (sql/create-table :rooms 
+      [:id "SERIAL"] ;; postgres specific auto increment
+      [:title "varchar(256)"])))
 
 (defn get-all [table]
   (with-conn
     (sql/with-query-results results
     ["select * from rooms"]
       (into [] results))))
+
+;; Create a single entry 
+
+(defn create-one [table item]
+  (with-conn
+    (sql/insert-record table item)))
+
+(comment
+  (create-one :rooms {:title "Huddle"}))
 
