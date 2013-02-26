@@ -10,7 +10,7 @@
 
 (defn all-rooms []
   (let [rooms (sql/get-all :rooms)]
-  (json-response rooms)))
+    (json-response rooms)))
 
 (defn get-room [id]
   (json-response {:status 200}))
