@@ -17,7 +17,7 @@
         (PUT    "/" {body :body} "")
         (DELETE "/" [] ""))))))
 
-(def prod-db []
+(defn prod-db []
  {:classname "org.postgresql.Driver"
    :subprotocol "postgresql"
    :user (System/getenv "DB_USER")
