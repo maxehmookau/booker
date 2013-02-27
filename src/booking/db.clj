@@ -19,6 +19,11 @@
          {:user (first (clojure.string/split user-info #":"))
           :password (second (clojure.string/split user-info #":"))})))))
 
+(def heroku-db-config
+  (merge {:classname "org.postgresql.Driver"
+          :subprotocol "postgresql"}
+    (heroku-db)))
+
 (def db-config
     {:classname "org.postgresql.Driver"
      :subprotocol "postgresql"
@@ -44,7 +49,7 @@
 (defn db-connection [] @pooled-db)
 
 (defmacro with-conn [& body]
-  `(sql/with-connection (heroku-db)
+  `(sql/with-connection (heroku-db-config)
      (sql/transaction
        (do ~@body))))
 
