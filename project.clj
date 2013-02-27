@@ -7,6 +7,7 @@
                  [compojure "1.1.1"]
                  [ring-json-response "0.2.0"]
                  [c3p0/c3p0 "0.9.1.2"]
+                 [ring/ring-jetty-adapter "1.1.2"]
                  [org.clojure/java.jdbc "0.2.3"]
                  [postgresql "9.1-901.jdbc4"]
                  [cheshire "4.0.3"]]

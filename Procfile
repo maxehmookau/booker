@@ -1,0 +1,1 @@
+web: lein run -m booker.server
