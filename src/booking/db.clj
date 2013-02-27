@@ -32,6 +32,18 @@
   `(sql/with-connection (db-connection)
      (do ~@body)))
 
+(defmacro with-sql-results 
+  "Run an abitrary sql query and return the results.
+   Query is a vector of the form [query args]"
+  [query]
+  `(with-conn
+    (sql/with-query-results results#
+      ~query
+      (into [] results#))))
+
+(comment
+  (with-sql-results ["select title from rooms as r where r.id = ?" 1]))
+
 (defn drop-table [table]
   (with-conn
     (sql/drop-table table)))
@@ -56,4 +68,14 @@
 
 (comment
   (create-one :rooms {:title "Huddle"}))
+
+(defn get-one [table id]
+  (with-conn
+    (sql/with-query-results results
+      ["select * from rooms where id = ?" id]
+      (if (empty? results) {:status 404}
+          (first results)))))
+
+(comment
+  (get-one :rooms 1))
 
