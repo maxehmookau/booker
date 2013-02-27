@@ -17,9 +17,9 @@
       (PUT    "/" {body :body} "")
       (DELETE "/" [] ""))))))
   
+;; Main application routes 
 (defroutes app-routes
-  (context "/rooms" [] 
-    room-routes)
+  (context "/rooms" [] room-routes)
   (route/not-found (json-response {:status 404 :body "Not found"})))
 
 (defn fake-request [routes uri method & params]

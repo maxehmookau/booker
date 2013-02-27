@@ -22,15 +22,28 @@ lein run -m booking.setup
 
 Get all meeting rooms
 
-```clojure
+```
 curl -i -X http://localhost:3000/rooms
 ```
 
 Get information about a single meeting room by room ID
 
-```clojure
+```
 curl -i -X http://localhost:3000/rooms/1
 ```
+
+Create a meeting room
+
+
+## BOOKINGS
+
+Get all bookings for a given date
+
+```
+curl -i -X http://localhost:3000/rooms/1/bookings?date="01-02-2013"
+```
+
+Get all bookings for a room
 
 ## License
 
