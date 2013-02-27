@@ -79,3 +79,11 @@
 (comment
   (get-one :rooms 1))
 
+(defn delete-one [table id]
+  (with-conn
+    (sql/delete-rows table ["id = ?" id])))
+
+(defn update-one [table id record]
+  (with-conn
+    (sql/update-values table ["id = ?" id] record)))
+

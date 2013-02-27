@@ -1,6 +1,8 @@
 (ns booker.utils
   (:import java.text.SimpleDateFormat))
 
+(defn uuid [] (str (java.util.UUID/randomUUID)))
+
 (defn fake-request 
   "Makes fake requests in development mode"
   [routes uri method & params]
@@ -12,6 +14,9 @@
              :scheme :http
              :headers (or params {})
              :request-method method})))
+
+;; YOU CAN TEST ROUTES IN THE REPL
+;; (def index-page (fake-request app "/" :get))
 
 (defn current-date []
   (.format (java.text.SimpleDateFormat. "MM/dd/yyyy") 
