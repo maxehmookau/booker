@@ -1,6 +1,7 @@
 (ns booking.handler
   (:use [compojure.core]
         [booking.db :as sql]
+        [booking.models.room :as room]
         [cheshire.core :as json]
         [ring.util.json-response])
   (:require [compojure.handler :as handler]
@@ -8,32 +9,32 @@
             
 ;; CRUD for rooms
 
-(defn all-rooms []
-  (let [rooms (sql/get-all :rooms)]
-    (json-response rooms)))
-
-(defn get-room [id]
-  (json-response {:status 200}))
-
-(defn create-room [room]
-  (json-response {:status 200}))
-
-(defn update-room [id room])
-
-(defn delete-room [id])
-
 (defroutes room-routes
-  (GET  "/" [] (all-rooms))
-  (POST "/" {body :body} (create-room body))
+  (GET  "/" []   (json-response (room/all-rooms)))
+  (POST "/" {body :body} {:body body}
     (context "/:id" [id] (defroutes room-routes
-      (GET    "/" [] (get-room id))
-      (PUT    "/" {body :body} (update-room id body))
-      (DELETE "/" [] (delete-room id)))))
+      (GET    "/" [] ""
+      (PUT    "/" {body :body} "")
+      (DELETE "/" [] ""))))))
   
 (defroutes app-routes
   (context "/rooms" [] 
     room-routes)
   (route/not-found (json-response {:status 404 :body "Not found"})))
+
+(defn fake-request [routes uri method & params]
+  (let [localhost "127.0.0.1"]
+    (routes {:server-port 80
+             :server-name localhost
+             :remote-addr localhost
+             :uri uri
+             :scheme :http
+             :headers (or params {})
+             :request-method method})))
+ 
+;; YOU CAN TEST ROUTES IN THE REPL
+ 
+(def index-page (fake-request app "/" :get))
 
 (def app
   (-> (handler/api app-routes)))
