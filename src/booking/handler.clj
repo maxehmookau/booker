@@ -19,8 +19,8 @@
 
 (def prod-db (db/heroku-db))
 
-(def db-config 
-  {:url (System/getEnv "HEROKU_POSTGRESQL_JADE_URL")})
+(def heroku-db-config 
+  {:url (System/getenv "HEROKU_POSTGRESQL_JADE_URL")})
 
 (def test-data 
   {:count 3 
@@ -29,7 +29,7 @@
 ;; Main application routes 
 (defroutes app-routes
   (GET "/api/rooms" [] (json-response test-data))
-  (GET "/config" [] (json-response db-config))
+  (GET "/config" [] (json-response heroku-db-config))
   (context "/rooms" [] room-routes)
   (route/not-found (json-response {:status 404 :body "Not found"})))
 
