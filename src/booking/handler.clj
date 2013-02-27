@@ -25,7 +25,8 @@
    :subname (System/getenv "DATABASE_URL")})
 
 (def test-data 
-  {:rooms [{:id 1 :title "Huddle"} {:id 2 :title "Lab"} {:id 3 :title "Board"}]})
+  {:count 3 
+   :rooms [{:id 1 :title "Huddle"} {:id 2 :title "Lab"} {:id 3 :title "Board"}]})
   
 ;; Main application routes 
 (defroutes app-routes

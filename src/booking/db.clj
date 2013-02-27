@@ -23,15 +23,13 @@
     (.setInitialPoolSize 1))]
   {:datasource cpds}))
 
-(defn db-access-url [] (or (System/getenv "DATABASE_URL") db-config))
-
 (def pooled-db 
-  (delay (pool (db-access-url))))
+  (delay (pool db-config)))
 
 (defn db-connection [] @pooled-db)
 
 (defmacro with-conn [& body]
-  `(sql/with-connection (db-connection)
+  `(sql/with-connection (or (System/getenv "DATABASE_URL") (db-connection))
      (sql/transaction
        (do ~@body))))
 
