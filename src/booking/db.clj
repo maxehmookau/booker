@@ -19,7 +19,7 @@
          {:user (first (clojure.string/split user-info #":"))
           :password (second (clojure.string/split user-info #":"))})))))
 
-(def heroku-db-config
+(defn heroku-db-config []
   (merge {:classname "org.postgresql.Driver"
           :subprotocol "postgresql"}
     (heroku-db)))
