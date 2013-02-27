@@ -13,5 +13,5 @@
   (try
     (create-db)
   (catch Exception e
-    (println (.getNextException e)))))
+    (println e))))
   
