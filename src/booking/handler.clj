@@ -29,7 +29,7 @@
 ;; Main application routes 
 (defroutes app-routes
   (GET "/api/rooms" [] (json-response test-data))
-  (GET "/config" [] (json-response heroku-db-config))
+  (GET "/config" [] (json-response prod-db))
   (context "/rooms" [] room-routes)
   (route/not-found (json-response {:status 404 :body "Not found"})))
 

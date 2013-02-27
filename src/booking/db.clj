@@ -8,8 +8,8 @@
 (defn heroku-db
   "Generate the db map according to Heroku environment when available."
   []
-  (when (System/getenv "DATABASE_URL")
-    (let [url (URI. (System/getenv "DATABASE_URL"))
+  (when (System/getenv "HEROKU_POSTGRESQL_JADE_URL")
+    (let [url (URI. (System/getenv "HEROKU_POSTGRESQL_JADE_URL"))
           host (.getHost url)
           port (if (pos? (.getPort url)) (.getPort url) 5432)
           path (.getPath url)]
