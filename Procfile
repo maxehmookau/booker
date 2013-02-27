@@ -1,1 +1,1 @@
-web: lein run -m booker.server
+web: lein run -m booking.server
