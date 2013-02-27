@@ -8,7 +8,6 @@
             [compojure.route :as route]))
             
 ;; CRUD for rooms
-
 (defroutes room-routes
   (GET  "/" []   (json-response (room/all-rooms)))
   (POST "/" {body :body} {:body body}

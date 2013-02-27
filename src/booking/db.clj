@@ -24,7 +24,7 @@
   {:datasource cpds}))
 
 (def pooled-db 
-  (delay (pool db-config)))
+  (delay (pool (or (System/getenv "DATABASE_URL") db-config))))
 
 (defn db-connection [] @pooled-db)
 
