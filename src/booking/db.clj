@@ -23,8 +23,10 @@
     (.setInitialPoolSize 1))]
   {:datasource cpds}))
 
+(defn db-access-url [] (or (System/getenv "DATABASE_URL") db-config))
+
 (def pooled-db 
-  (delay (pool (or (System/getenv "DATABASE_URL") db-config))))
+  (delay (pool (db-access-url))))
 
 (defn db-connection [] @pooled-db)
 
@@ -54,6 +56,14 @@
     (sql/create-table :rooms 
       [:id "SERIAL"] ;; postgres specific auto increment
       [:title "varchar(256)"])))
+
+(defn create-bookings-table []
+  (with-conn
+    (sql/create-table :bookings
+      [:id "SERIAL"]
+      [:room_id "integer"]
+      [:start_date ""]
+      [:end_date ""])))
 
 (defn get-all [table]
   (with-conn

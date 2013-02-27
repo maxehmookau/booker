@@ -16,9 +16,21 @@
         (GET    "/" [] (json-response (room/get-room id))
         (PUT    "/" {body :body} "")
         (DELETE "/" [] ""))))))
+
+(def prod-db
+  {:classname "org.postgresql.Driver"
+   :subprotocol "postgresql"
+   :user (System/getenv "DB_USER")
+   :password (System/getenv "DB_PASSWORD")
+   :subname (System/getenv "DATABASE_URL")})
+
+(def test-data 
+  {:rooms [{:id 1 :title "Huddle"} {:id 2 :title "Lab"} {:id 3 :title "Board"}]})
   
 ;; Main application routes 
 (defroutes app-routes
+  (GET "/api/rooms" [] (json-response test-data))
+  (GET "/config" [] (json-response prod-db))
   (context "/rooms" [] room-routes)
   (route/not-found (json-response {:status 404 :body "Not found"})))
 
