@@ -1,6 +1,6 @@
 (ns booking.handler
   (:use [compojure.core]
-        [booking.db :as sql]
+        [booking.db :as db]
         [booking.models.room :as room]
         [cheshire.core :as json]
         [ring.util.json-response])
@@ -17,12 +17,7 @@
         (PUT    "/" {body :body} "")
         (DELETE "/" [] ""))))))
 
-(defn prod-db []
- {:classname "org.postgresql.Driver"
-   :subprotocol "postgresql"
-   :user (System/getenv "DB_USER")
-   :password (System/getenv "DB_PASSWORD")
-   :subname (System/getenv "DATABASE_URL")})
+(def prod-db (db/heroku-db))
 
 (def test-data 
   {:count 3 
@@ -31,7 +26,7 @@
 ;; Main application routes 
 (defroutes app-routes
   (GET "/api/rooms" [] (json-response test-data))
-  (GET "/config" [] (json-response (prod-db)))
+  (GET "/config" [] (json-response (db/heroku-db)))
   (context "/rooms" [] room-routes)
   (route/not-found (json-response {:status 404 :body "Not found"})))
 

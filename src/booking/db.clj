@@ -1,8 +1,23 @@
 (ns booking.db
   (:import com.mchange.v2.c3p0.ComboPooledDataSource)
+  (:import java.net.URI)
   (:require [clojure.java.jdbc :as sql]))
 
 ;; Database access
+
+(defn heroku-db
+  "Generate the db map according to Heroku environment when available."
+  []
+  (when (System/getenv "DATABASE_URL")
+    (let [url (URI. (System/getenv "DATABASE_URL"))
+          host (.getHost url)
+          port (if (pos? (.getPort url)) (.getPort url) 5432)
+          path (.getPath url)]
+      (merge
+       {:subname (str "//" host ":" port path)}
+       (when-let [user-info (.getUserInfo url)]
+         {:user (first (clojure.string/split user-info #":"))
+          :password (second (clojure.string/split user-info #":"))})))))
 
 (def db-config
     {:classname "org.postgresql.Driver"
@@ -29,7 +44,7 @@
 (defn db-connection [] @pooled-db)
 
 (defmacro with-conn [& body]
-  `(sql/with-connection (or (System/getenv "DATABASE_URL") (db-connection))
+  `(sql/with-connection (heroku-db)
      (sql/transaction
        (do ~@body))))
 
