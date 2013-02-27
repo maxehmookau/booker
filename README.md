@@ -4,6 +4,20 @@ Clojure REST API for the Box UK Hackfest
 
 ## Usage
 
+Setup
+
+Make sure Postgres is running and create the database
+
+```
+createdb booking
+```
+
+Create the database tables
+
+```
+lein run -m booking.setup
+```
+
 ### ROOMS
 
 Get all meeting rooms
