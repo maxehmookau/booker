@@ -30,7 +30,8 @@
 
 (defmacro with-conn [& body]
   `(sql/with-connection (db-connection)
-     (do ~@body)))
+     (sql/transaction
+       (do ~@body))))
 
 (defmacro with-sql-results 
   "Run an abitrary sql query and return the results.

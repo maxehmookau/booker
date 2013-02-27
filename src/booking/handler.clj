@@ -12,10 +12,11 @@
 (defroutes room-routes
   (GET  "/" []   (json-response (room/all-rooms)))
   (POST "/" {body :body} {:body body}
-    (context "/:id" [id] (defroutes room-routes
-      (GET    "/" [] ""
-      (PUT    "/" {body :body} "")
-      (DELETE "/" [] ""))))))
+    (context "/:id" [id] 
+      (defroutes room-routes
+        (GET    "/" [] (json-response (room/get-room id))
+        (PUT    "/" {body :body} "")
+        (DELETE "/" [] ""))))))
   
 ;; Main application routes 
 (defroutes app-routes
