@@ -24,13 +24,18 @@
           :subprotocol "postgresql"}
     (heroku-db)))
 
-(def db-config
-    {:classname "org.postgresql.Driver"
-     :subprotocol "postgresql"
-     :subname "//localhost/booking"
-     :username "postgres"
-     :password "postgres"})
-   
+(defn local-db-config []
+  {:classname "org.postgresql.Driver"
+   :subprotocol "postgresql"
+   :subname "//localhost/booking"
+   :username "postgres"
+   :password "postgres"})
+
+(defn get-database-config []
+  (if (System/getenv "HEROKU_POSTGRESQL_JADE_URL")
+    (heroku-db-config)
+    (local-db-config)))
+       
 (defn pool
   [config]
     (let [cpds (doto (ComboPooledDataSource.)
@@ -44,12 +49,12 @@
   {:datasource cpds}))
 
 (def pooled-db 
-  (delay (pool db-config)))
+  (delay (pool local-db-config)))
 
 (defn db-connection [] @pooled-db)
 
 (defmacro with-conn [& body]
-  `(sql/with-connection (heroku-db-config)
+  `(sql/with-connection (get-database-config)
      (sql/transaction
        (do ~@body))))
 
