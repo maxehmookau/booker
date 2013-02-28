@@ -9,16 +9,11 @@
             
 ;; CRUD for rooms
 (defroutes room-routes
-  (GET  "/" []   (json-response (room/all-rooms)))
-  (GET "/config" (json-response (db/heroku-db)))
-  (POST "/" {body :body} {:body body}
-    (context "/:id" [id] 
-      (defroutes room-routes
-        (GET    "/" [] (json-response (room/get-room id))
-        (PUT    "/" {body :body} "")
-        (DELETE "/" [] ""))))))
-
-(def prod-db (db/heroku-db))(
+  (GET    "/"    []           (json-response (room/all-rooms)))
+  (POST   "/"    {body :body} (json-response {:body body})
+  (GET    "/:id" [id]         (json-response (room/get-room id))
+  (PUT    "/:id" {body :body} (json-response {}))
+  (DELETE "/:id" [id]         (json-repsonse {:id id})))))
 
 (def test-data 
   {:count 3 
@@ -27,6 +22,7 @@
 ;; Main application routes 
 (defroutes app-routes
   (GET "/api/rooms" [] (json-response test-data))
+  (GET "/config" (json-response (db/heroku-db)))
   (context "/rooms" [] room-routes)
   (route/not-found (json-response {:status 404 :body "Not found"})))
 
