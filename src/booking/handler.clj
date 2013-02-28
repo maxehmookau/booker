@@ -10,6 +10,7 @@
 ;; CRUD for rooms
 (defroutes room-routes
   (GET  "/" []   (json-response (room/all-rooms)))
+  (GET "/config" (json-response (db/heroku-db)))
   (POST "/" {body :body} {:body body}
     (context "/:id" [id] 
       (defroutes room-routes
@@ -17,7 +18,7 @@
         (PUT    "/" {body :body} "")
         (DELETE "/" [] ""))))))
 
-(def prod-db (db/heroku-db))
+(def prod-db (db/heroku-db))(
 
 (def test-data 
   {:count 3 
