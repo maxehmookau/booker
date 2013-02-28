@@ -21,8 +21,9 @@
   
 ;; Main application routes 
 (defroutes app-routes
+  (GET "/"          [] (json-response {:status 200 :body "Roombooker API"}))
   (GET "/api/rooms" [] (json-response test-data))
-  (GET "/config" (json-response (db/heroku-db)))
+  (GET "/config"    [] (json-response (db/heroku-db)))
   (context "/rooms" [] room-routes)
   (route/not-found (json-response {:status 404 :body "Not found"})))
 
