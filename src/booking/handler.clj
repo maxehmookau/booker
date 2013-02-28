@@ -13,7 +13,7 @@
   (POST   "/"    {body :body} (json-response {:body body})
   (GET    "/:id" [id]         (json-response (room/get-room id))
   (PUT    "/:id" {body :body} (json-response {}))
-  (DELETE "/:id" [id]         (json-repsonse {:id id})))))
+  (DELETE "/:id" [id]         (json-response {:id id})))))
 
 (def test-data 
   {:count 3 
