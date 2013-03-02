@@ -72,7 +72,10 @@
 
 (defn drop-table [table]
   (with-conn
-    (sql/drop-table table)))
+    (try
+      (sql/drop-table table)
+    (catch Exception e
+      (print (.getNextException e))))))
 
 (defn create-rooms-table []
   (with-conn
@@ -84,9 +87,18 @@
   (with-conn
     (sql/create-table :bookings
       [:id "SERIAL"]
-      [:room_id "integer"]
-      [:start_date ""]
-      [:end_date ""])))
+      [:room_id "INTEGER"]
+      [:booked_from "DATE"]
+      [:booked_until "DATE"])))
+
+(defn create-db []
+  (do (create-rooms-table)
+      (create-bookings-table)))
+
+(defn drop-db []
+  (let [tables [:rooms :bookings]]
+    (doseq [table tables]
+      (drop-table table))))
 
 (defn get-all [table]
   (with-conn
